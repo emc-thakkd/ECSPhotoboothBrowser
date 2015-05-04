@@ -1,0 +1,14 @@
+extends layout
+
+block content
+	div#content-wrapper
+		div#banner.center
+			div#bannerImage
+				img(src='../../images/EMC-Code-Icon.png' style="width: 100%;")
+			div#bannerText
+				h1(style="font-size:4.5em;") EMC {code} Photobooth
+		div.clearfix
+		br
+		br
+		form#formStart(name="getStarted",method="get",action="/infophotos/new").center
+			button#btnStart(type="submit") Click Here To Get Started!

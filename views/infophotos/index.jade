@@ -1,0 +1,72 @@
+extends ../layout
+
+
+block content
+    script(type='text/javascript', src='/javascripts/jquery.tablesorter.js')
+    div#content-wrapper
+        h1.center Admin Dashboard
+        h4.center.egg2 every photo! muhahah
+        ul#admindb
+            li
+                h3 Registered:
+                h3.center #{totalinfophotos}
+            li 
+                h3 Pictures Taken:
+                h3.center #{totalpictures}
+            li 
+                h3 Subscribers:
+                h3.center #{subscribers}
+
+
+        table#sortme.tablesorter
+            thead
+                tr
+                    th First Name
+                    th Last Name
+                    th Company
+                    th Title
+                    th Twitter Handle
+                    th Photo Taken
+                    th Subscribed
+                    th Show
+                    th.egg Edit
+                    th.egg Delete
+            tbody
+                each infophoto, i in infophotos
+                    tr
+                        td #{infophoto.fname}
+                        td #{infophoto.lname}
+                        td #{infophoto.company}
+                        td #{infophoto.title}
+                        td #{infophoto.twitter}
+                        if infophoto.photos.length > 0
+                            td YES
+                        else
+                            td NO
+                        if infophoto.newsletter == true
+                            td YES
+                        else
+                            td NO
+                        td 
+                            a(href='/infophotos/#{infophoto.uniqueurl}').btnshow Show
+                        td.egg
+                            a(href='/infophotos/#{infophoto.uniqueurl}/edit').btnedit Edit
+                        td.egg
+                            form(action='/infophotos/#{infophoto.uniqueurl}/edit',method='post',enctype='application/x-www-form-urlencoded')
+                                    input(type='hidden',value='DELETE',name='_method')
+                                    button(type='submit' class='btndelete').
+                                        Delete
+    
+
+    script(type='text/javascript').
+        $( document ).ready(function() {
+            $('.egg').hide();
+            $("#sortme").tablesorter();
+            $('.egg2').click(function() {
+                $('.egg').show();
+            });
+        });
+            
+
+            
+              

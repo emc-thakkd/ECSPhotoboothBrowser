@@ -1,0 +1,210 @@
+extends ../layout
+
+block content
+	script(src='/javascripts/webcam.min.js')
+	h1#look.center  &#x21E7; LOOK AT THE CAMERA &#x21E7;
+	div#camera
+		div#thecam
+	div#takenpics
+		ul#spot
+			li
+				div#photo1
+			li
+				div#photo2
+			li
+				div#photo3
+			li
+				div#photo4
+	div#content-wrapper
+		div#start
+			h1.center Get Ready!
+			h1.center Photos will begin in 10 seconds!
+			br
+			br
+			h2.underline.center If you aren't 
+				b #{infophoto.fname} #{infophoto.lname},  
+				| go back!
+			a(href='javascript:history.back()')
+				img(src='../../images/green_arrow.png' style='width:50%;').center
+		div#thanks
+			h1.center Check out your photos at 
+			h2.center http://emccodephotos.cfapps.io/infophotos/#{infophoto.uniqueurl}
+			br
+			br
+			div.thanksImage
+				img(src='../../images/email.png')
+			div.thanksText
+				h2 An email has been sent to #{infophoto.email}
+			if infophoto.twitter != ''
+				div.thanksImage
+					img(src='../../images/twitter.png')
+				div.thanksText
+					h2 A tweet has been sent to #{infophoto.twitter}
+			
+
+	script(type='text/javascript').
+		$( document ).ready(function() {
+			$("#thanks").hide();
+			$("#camera").hide();
+			$("#takenpics").hide();
+
+			// preload shutter audio clip
+			var shutter = new Audio();
+			shutter.autoplay = false;
+			shutter.src = navigator.userAgent.match(/Firefox/) ? '/images/shutter.ogg' : '/images/shutter.mp3';
+
+			setTimeout(
+				function() 
+			{
+				$("#start").hide();
+				display_cam();
+			}, 10000);
+	
+
+			function display_cam() {
+				$("#camera").show();
+				$("#takenpics").show();
+
+				Webcam.set({
+					dest_width: 640,
+					dest_height: 480,
+					image_format: 'jpeg',
+					jpeg_quality: 90
+				});
+
+				Webcam.attach('thecam');
+				$("#photo1").append('<img id="countdown_gif" src="/images/countdown0.gif" />') 
+				clear_gif();
+				setTimeout(
+					function() 
+				{
+					take_snapshot1();
+				}, 5000);
+			}
+
+			function take_snapshot1() {
+				$("#photo1 img").remove();
+				// play sound effect
+				shutter.play();
+				Webcam.snap( function(data_uri) {
+					document.getElementById('photo1').innerHTML = '<img src="'+data_uri+'"/>';
+					post_photo(data_uri, 'photo1');
+					$("#photo2").append('<img id="countdown_gif" src="/images/countdown0.gif" />')
+					clear_gif();
+		
+					setTimeout(
+						function() 
+					{
+						take_snapshot2();
+					}, 5000);
+
+				});
+				
+			}
+
+			function take_snapshot2() {
+				$("#photo2 img").remove();
+				shutter.play();
+				Webcam.snap( function(data_uri) {
+					document.getElementById('photo2').innerHTML = '<img src="'+data_uri+'"/>';
+					post_photo(data_uri, 'photo2');
+					$("#photo3").append('<img id="countdown_gif" src="/images/countdown0.gif" />')
+					clear_gif(); 
+					setTimeout(
+						function() 
+					{
+						take_snapshot3();
+					}, 5000);
+
+				});
+			}
+
+			function take_snapshot3() {
+				$("#photo3 img").remove();
+				shutter.play();
+				Webcam.snap( function(data_uri) {
+					document.getElementById('photo3').innerHTML = '<img src="'+data_uri+'"/>';
+					post_photo(data_uri, 'photo3')
+					$("#photo4").append('<img id="countdown_gif" src="/images/countdown0.gif" />')
+					clear_gif();
+					setTimeout(
+						function() 
+					{
+						take_snapshot4();
+					}, 5000);
+				});
+			}
+
+			function take_snapshot4() {
+				$("#photo4 img").remove();
+				shutter.play();
+				Webcam.snap( function(data_uri) {
+					document.getElementById('photo4').innerHTML = '<img src="'+data_uri+'"/>';
+					post_photo(data_uri, 'photo4')
+					$("#photo4").show();
+				});
+				send_email();
+				if('#{infophoto.twitter}' != ''){
+					send_tweet();
+				}
+				clear_it();
+			}
+
+			function clear_it() {
+				setTimeout(
+					function() 
+				{
+					Webcam.reset();
+					$("#camera").hide();
+					$("#takenpics").hide();
+					$("#look").hide();
+					$("#thanks").show();
+
+					setTimeout(
+						function() 
+					{
+						var url = window.location.href
+						var goToList = url.replace(window.location.pathname, "/infophotos/list")
+						window.location.href = goToList;
+					}, 10000);
+
+				}, 5000);
+			}
+
+			function clear_gif() {
+				var gifSource = $('#countdown_gif').attr('src'); //get the source in the var
+				$('#countdown_gif').attr('src', ""); //erase the source     
+				$('#countdown_gif').attr('src', gifSource+"?"+new Date().getTime()); //add the date to the source of the image... :-) 
+			}
+
+			function post_photo(photoData, number) {
+				$.ajax({
+					method: "POST",
+					url: "/infophotos/addpic/#{infophoto.uniqueurl}",
+					data: { 
+						photo: photoData, 
+						number: number
+					}
+				});
+			}
+
+			function send_email() {
+				$.ajax({
+					method: "POST",
+					url: "/infophotos/sendmail/#{infophoto.uniqueurl}",
+					data: { 
+						email: '#{infophoto.email}'
+					}
+				});
+			}
+
+			function send_tweet() {
+				$.ajax({
+					method: "POST",
+					url: "/infophotos/sendtweet/#{infophoto.uniqueurl}",
+					data: { 
+						twitid: '#{infophoto.twitter}',
+					}
+				});
+			}
+		});

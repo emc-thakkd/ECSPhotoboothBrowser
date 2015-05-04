@@ -1,0 +1,97 @@
+<!DOCTYPE>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>EMC ECS backed Photo Booth: Fun way to know your personal hyperscale cloud storage platform</title>
+<link href="../main.css" rel="stylesheet">
+</head>
+<body style="width:100%;height:100%;text-align:center;color:#333;background-color:#000000;">
+
+<style>
+table, th, td {
+    border: 1px solid white;
+    border-collapse: collapse;
+    width=90%;
+}
+th, td {
+    text-align: center;
+    color:#ffffff;
+    width=50%;
+    background-image:url(../topbar.png);
+}
+h1 {
+margin-left:49px;line-height:50px;text-shadow:0 5px 5px #000;color:#ffffff;
+}
+
+</style>
+<div style="width:100%;height:60px;background-image:url(../topbar.png);">
+<div style="width:15%;">
+<img style="float:left;max-width: 170px;" src="../logo.jpg">
+<!-- <p style="color:DarkGray"> InvisibleText for Nav Bar </p> -->
+</div>
+<div style="width:85%;">
+<h2 style="color: #4682b4; font-family:san-serif;font-size:50px;">ECS Powered Photo Booth Fun</h2>
+</div>
+</div>
+
+<div style="height:490px;width:100%;">
+<div style="width:20%; height:100%;float:left;background-image:url(../topbar.png)">
+<img id="TagId1" style="max-width:72%;border:8px solid #fff;transform:rotate(7deg)" src="../photo1.jpg">
+<img id="TagId2" style="max-width:72%;border:8px solid #fff;transform:rotate(-7deg)" src="../photo2.jpg">
+<img id="TagId3" style="max-width:72%;border:8px solid #fff;transform:rotate(7deg)" src="../photo3.jpg">
+<img id="TagId4" style="max-width:72%;border:8px solid #fff;transform:rotate(-7deg)" src="../photo4.jpg">
+</div>
+
+<div style="width:60%;height:100%;float:left;background-image:url(../hdr_home_mobile.jpg);">
+<!-- <h2 style="color: #fff; font-family:Arial,san-serif;font-size:30px;transform: rotate(-4deg);">ECS backed Photo Booth Fun</h2> -->
+<div style="display:table;">
+<h1 align="center">Have you had your photobooth picture taken!! </h1>
+ <h1 align="center">Head over to PhotoBooth and get your special pics to tweet from the hottest spot in storage!</h1>
+<br>
+<br>
+</div>
+<div>
+<table style="width:90%;margin:0 auto;">
+  <tr>
+    <th><img style="max-height:25%;" src="../users2.png"></th>
+    <th style="width:50%;">
+        <img style="max-height:50%;" src="../objects1.png">
+        <img style="max-height:65%;" src="../objects2.png">
+        <img style="max-height:50%;" src="../objects3.png">
+    </th> 
+  </tr>
+{{#records}}
+  <tr>
+    <td><h2>{{numUsers}}</h2></td>
+    <td><h2>{{avgSize}}</h2></td>
+  </tr>
+{{/records}}
+</table>
+</div>
+<div style="width:100%;float:left;">
+<h1 align="center" style="color:#ffffff;font-size:30px;transform: rotate(-4deg);">Because people do the funniest things when they think no one is watching!!! </h1>
+</div>
+</div>
+<div style="width:20%; height:100%;float:right;background-image:url(../topbar.png)">
+<img id="TagId5" style="max-width:72%;border:8px solid #fff;transform:rotate(7deg)" src="../photo5.jpg">
+<img id="TagId6" style="max-width:72%;border:8px solid #fff;transform:rotate(-7deg)" src="../photo6.jpg">
+<img id="TagId7" style="max-width:72%;border:8px solid #fff;transform:rotate(7deg)" src="../photo7.jpg">
+<img id="TagId8" style="max-width:72%;border:8px solid #fff;transform:rotate(-7deg)" src="../photo8.jpg">
+</div>
+</div>
+<script type="text/javascript">
+setTimeout(function(){
+   window.location.reload(1);
+}, 7000);
+//   setInterval(function() {
+//     var myImageElement = document.getElementById('TagId1');
+//     myImageElement.src = '../photo1.jpg?rand=' + Math.random();
+// }, 5000);
+</script>
+</body>
+</html>
